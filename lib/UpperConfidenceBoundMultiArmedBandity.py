@@ -3,6 +3,7 @@ import numpy as np
 class UCBStruct:
     def __init__(self, num_arm):
         self.d=num_arm
+        
 
         self.UserArmMean = np.zeros(self.d)
         self.UserArmTrials = np.zeros(self.d)

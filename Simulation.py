@@ -191,7 +191,7 @@ if __name__ == '__main__':
 
 	testing_iterations = 200000
 	NoiseScale = 0.1  # standard deviation of Gaussian noise
-	n_articles = 25
+	n_articles = 10
 	n_users = 10
 	poolArticleSize = None
 
