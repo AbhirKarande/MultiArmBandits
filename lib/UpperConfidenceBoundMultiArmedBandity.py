@@ -17,11 +17,19 @@ class UCBStruct:
     def getTheta(self):
         return self.UserArmMean
 
-
+    #decision function for upper confidence bound algorithm
     def decide(self, pool_articles):
-        
+        maxPTA = float('-inf')
+        articlePicked = None
 
+        for article in pool_articles:
+            article_pta = self.UserArmMean[article.id] + np.sqrt(2*np.log(self.time)/self.UserArmTrials[article.id])
+            # pick article with highest Prob
+            if maxPTA < article_pta:
+                articlePicked = article
+                maxPTA = article_pta
 
+        return articlePicked
 
 
 
