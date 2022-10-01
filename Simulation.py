@@ -7,12 +7,14 @@ import matplotlib.pyplot as plt
 import argparse
 # local address to save simulated users, simulated articles, and results
 from conf import sim_files_folder, save_address
+from lib.UpperConfidenceBoundMultiArmedBandity import UCBMultiArmedBandit
 from util_functions import featureUniform, gaussianFeature
 from Articles import ArticleManager
 from Users import UserManager
 
 from lib.EpsilonGreedyLinearBandit import EpsilonGreedyLinearBandit
 from lib.EpsilonGreedyMultiArmedBandit import EpsilonGreedyMultiArmedBandit
+from lib.ThompsonSamplingMultiArmedBandit import ThompsonSamplingMultiArmedBandit
 
 class simulateOnlineData(object):
 	def __init__(self, context_dimension, testing_iterations, plot, articles,
@@ -219,6 +221,9 @@ if __name__ == '__main__':
 
 	algorithms['EpsilonGreedyLinearBandit'] = EpsilonGreedyLinearBandit(dimension=context_dimension, lambda_=0.1, epsilon=None)
 	algorithms['EpsilonGreedyMultiArmedBandit'] = EpsilonGreedyMultiArmedBandit(num_arm=n_articles, epsilon=None)
+	algorithms['UpperConfidenceBoundMultiArmedBandit'] = UCBMultiArmedBandit(num_arm=n_articles, c=0.1)
+	algorithms['ThompsonSamplingMultiArmedBandit'] = ThompsonSamplingMultiArmedBandit(num_arm=n_articles, alpha=1, beta=1)
+
 
 	## Run Simulation ##
 	print("Starting for ", simExperiment.simulation_signature)
