@@ -2,28 +2,26 @@ import numpy as np
 
 class UCBStruct:
     def __init__(self, num_arm):
-        self.d=num_arm
-        
-
+        self.d = num_arm
         self.UserArmMean = np.zeros(self.d)
         self.UserArmTrials = np.zeros(self.d)
-
         self.time = 0
+
     def updateParameters(self, articlePicked_id, click):
         self.UserArmMean[articlePicked_id] = (self.UserArmMean[articlePicked_id]*self.UserArmTrials[articlePicked_id] + click) / (self.UserArmTrials[articlePicked_id]+1)
         self.UserArmTrials[articlePicked_id] += 1
 
         self.time += 1
+
     def getTheta(self):
         return self.UserArmMean
 
-    #decision function for upper confidence bound algorithm
     def decide(self, pool_articles):
         maxPTA = float('-inf')
         articlePicked = None
 
         for article in pool_articles:
-            article_pta = self.UserArmMean[article.id] + np.sqrt(2*np.log(self.time)/self.UserArmTrials[article.id])
+            article_pta = self.UserArmMean[article.id] + np.sqrt(2*np.log(self.time+1)/(self.UserArmTrials[article.id]+1))
             # pick article with highest Prob
             if maxPTA < article_pta:
                 articlePicked = article
