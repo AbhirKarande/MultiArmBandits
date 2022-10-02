@@ -6,27 +6,28 @@ class UCBStruct:
         self.UserArmMean = np.zeros(self.d)
         self.UserArmTrials = np.zeros(self.d)
         self.time = 0
-
-    def updateParameters(self, articlePicked_id, click):
-        self.UserArmMean[articlePicked_id] = (self.UserArmMean[articlePicked_id]*self.UserArmTrials[articlePicked_id] + click) / (self.UserArmTrials[articlePicked_id]+1)
-        self.UserArmTrials[articlePicked_id] += 1
-
-        self.time += 1
-
     def getTheta(self):
         return self.UserArmMean
-
+    
+    
+    
+    def updateParameters(self, articlePicked_id, click):
+        # update parameters
+        #update the mean of the article picked, 
+        # and the number of trials, and the time,  
+        self.UserArmMean[articlePicked_id] = (self.UserArmMean[articlePicked_id]*self.UserArmTrials[articlePicked_id] + click) / (self.UserArmTrials[articlePicked_id]+1)
+        self.UserArmTrials[articlePicked_id] += 1
+        self.time += 1
+    
     def decide(self, pool_articles):
         maxPTA = float('-inf')
         articlePicked = None
-
+        #the UCB formula is the mean of the article plus the square root of 2 times the log of the time divided by the number of trials of the article
         for article in pool_articles:
             article_pta = self.UserArmMean[article.id] + np.sqrt(2*np.log(self.time+1)/(self.UserArmTrials[article.id]+1))
-            # pick article with highest Prob
             if maxPTA < article_pta:
                 articlePicked = article
                 maxPTA = article_pta
-
         return articlePicked
 
 

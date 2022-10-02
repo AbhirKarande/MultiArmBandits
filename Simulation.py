@@ -187,7 +187,7 @@ if __name__ == '__main__':
 		context_dimension = 25
 
 	if args.actionset:
-		actionset = args.actionset
+		actionset = "basis_vector"
 	else:
 		actionset = "basis_vector"  # "basis_vector" or "random"
 
@@ -221,8 +221,8 @@ if __name__ == '__main__':
 
 	algorithms['EpsilonGreedyLinearBandit'] = EpsilonGreedyLinearBandit(dimension=context_dimension, lambda_=0.1, epsilon=None)
 	algorithms['EpsilonGreedyMultiArmedBandit'] = EpsilonGreedyMultiArmedBandit(num_arm=n_articles, epsilon=None)
-	algorithms['UpperConfidenceBoundMultiArmedBandit'] = UCBMultiArmedBandit(num_arm=n_articles, c=0.1)
-	algorithms['ThompsonSamplingMultiArmedBandit'] = ThompsonSamplingMultiArmedBandit(num_arm=n_articles, alpha=1, beta=1)
+	algorithms['UpperConfidenceBoundMultiArmedBandit'] = UCBMultiArmedBandit(num_arm=n_articles)
+	algorithms['ThompsonSamplingMultiArmedBandit'] = ThompsonSamplingMultiArmedBandit(num_arm=n_articles)
 
 
 	## Run Simulation ##
