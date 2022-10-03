@@ -53,6 +53,8 @@ class LinTSStruct:
             theta = np.random.multivariate_normal(self.UserArmMean, np.diag(self.UserArmVar))
             #compute the probability of the article given the user's preference
             article_pta = np.dot(theta, article.id)
+            #convert article_pta to a float that can be compared to maxPTA
+            article_pta = float(article_pta)
             # pick article with highest Prob
             if maxPTA < article_pta:
                 articlePicked = article

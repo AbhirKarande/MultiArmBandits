@@ -48,7 +48,10 @@ class LinUCBStruct:
 
         for article in pool_articles:
             article_pta = np.dot(self.UserArmMean, article.id) + self.alpha * np.sqrt(np.dot(article.id, np.dot(np.diag(self.UserArmVar), article.id)))
-            # pick article with highest Prob
+            print(type(article_pta))
+            print(article_pta)
+            #convert article_pta to float
+            article_pta = float(article_pta)
             if maxPTA < article_pta:
                 articlePicked = article
                 maxPTA = article_pta

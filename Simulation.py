@@ -15,6 +15,8 @@ from Users import UserManager
 from lib.EpsilonGreedyLinearBandit import EpsilonGreedyLinearBandit
 from lib.EpsilonGreedyMultiArmedBandit import EpsilonGreedyMultiArmedBandit
 from lib.ThompsonSamplingMultiArmedBandit import ThompsonSamplingMultiArmedBandit
+from lib.LinUCB import LinUCB
+from lib.LinTS import LinTS
 
 class simulateOnlineData(object):
 	def __init__(self, context_dimension, testing_iterations, plot, articles,
@@ -223,6 +225,9 @@ if __name__ == '__main__':
 	algorithms['EpsilonGreedyMultiArmedBandit'] = EpsilonGreedyMultiArmedBandit(num_arm=n_articles, epsilon=None)
 	algorithms['UpperConfidenceBoundMultiArmedBandit'] = UCBMultiArmedBandit(num_arm=n_articles)
 	algorithms['ThompsonSamplingMultiArmedBandit'] = ThompsonSamplingMultiArmedBandit(num_arm=n_articles)
+	algorithms['LinTS'] = LinTS(dimension=context_dimension,alpha=0.1)
+
+
 
 
 	## Run Simulation ##
