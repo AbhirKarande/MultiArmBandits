@@ -1,11 +1,11 @@
-#implement upper confidence bound linear bandit
+#implement LinUCB linear bandit algorithm
 
 import numpy as np
 import scipy.stats as stats
 import math
 import random
 
-class UpperConfidenceBoundLinearBandit:
+class LinUCB:
     def __init__(self, dimension, alpha):
         self.users = {}
         self.dimension = dimension
@@ -14,7 +14,7 @@ class UpperConfidenceBoundLinearBandit:
 
     def decide(self, pool_articles, userID):
         if userID not in self.users:
-            self.users[userID] = UCBLinearStruct(self.dimension, self.alpha)
+            self.users[userID] = LinUCBStruct(self.dimension, self.alpha)
         return self.users[userID].decide(pool_articles)
 
     def updateParameters(self, articlePicked, click, userID):
@@ -23,7 +23,8 @@ class UpperConfidenceBoundLinearBandit:
     def getTheta(self,userID):
         return self.users[userID].UserArmMean
 
-class UCBLinearStruct:
+
+class LinUCBStruct:
     def __init__(self, dimension, alpha):
         self.d = dimension
         self.UserArmMean = np.zeros(self.d)
@@ -40,13 +41,13 @@ class UCBLinearStruct:
 
     def getTheta(self):
         return self.UserArmMean
-    
+
     def decide(self, pool_articles):
         maxPTA = float('-inf')
         articlePicked = None
 
         for article in pool_articles:
-            article_pta = np.dot(self.UserArmMean, article.id) + self.alpha * math.sqrt(np.dot(np.dot(article.id, np.diag(self.UserArmVar)), article.id))
+            article_pta = np.dot(self.UserArmMean, article.id) + self.alpha * np.sqrt(np.dot(article.id, np.dot(np.diag(self.UserArmVar), article.id)))
             # pick article with highest Prob
             if maxPTA < article_pta:
                 articlePicked = article

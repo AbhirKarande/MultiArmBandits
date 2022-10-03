@@ -191,11 +191,11 @@ if __name__ == '__main__':
 	else:
 		actionset = "basis_vector"  # "basis_vector" or "random"
 
-	testing_iterations = 200000
+	testing_iterations = 250
 	NoiseScale = 0.1  # standard deviation of Gaussian noise
-	n_articles = 10
+	n_articles = 5
 	n_users = 10
-	poolArticleSize = None
+	poolArticleSize = 10
 
 	if actionset == "basis_vector":
 		n_articles = context_dimension  # there can be at most context_dimension number of basis vectors

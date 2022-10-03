@@ -35,7 +35,6 @@ class ThompsonSamplingStruct:
         self.UserArmMean[articlePicked_id] = (self.UserArmMean[articlePicked_id]*self.UserArmTrials[articlePicked_id] + click) / (self.UserArmTrials[articlePicked_id]+1)
         self.UserArmTrials[articlePicked_id] += 1
         self.UserArmVar[articlePicked_id] = 1.0/(self.UserArmTrials[articlePicked_id]+1)
-
         self.time += 1
 
     def getTheta(self):
