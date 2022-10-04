@@ -36,7 +36,7 @@ class UCBMultiArmedBandit:
     def __init__(self, num_arm):
         self.users = {}
         self.num_arm = num_arm
-        self.CanEstimateUserPreference = False
+        self.CanEstimateUserPreference = True
 
     def decide(self, pool_articles, userID):
         if userID not in self.users:

@@ -189,12 +189,12 @@ if __name__ == '__main__':
 		context_dimension = 25
 
 	if args.actionset:
-		actionset = "basis_vector"
+		actionset = "random"
 	else:
 		actionset = "basis_vector"  # "basis_vector" or "random"
 
 	testing_iterations = 250
-	NoiseScale = 0.1  # standard deviation of Gaussian noise
+	NoiseScale = 0.5  # standard deviation of Gaussian noise
 	n_articles = 5
 	n_users = 10
 	poolArticleSize = 10
@@ -222,10 +222,13 @@ if __name__ == '__main__':
 	algorithms = {}
 
 	algorithms['EpsilonGreedyLinearBandit'] = EpsilonGreedyLinearBandit(dimension=context_dimension, lambda_=0.1, epsilon=None)
-	algorithms['EpsilonGreedyMultiArmedBandit'] = EpsilonGreedyMultiArmedBandit(num_arm=n_articles, epsilon=None)
-	algorithms['UpperConfidenceBoundMultiArmedBandit'] = UCBMultiArmedBandit(num_arm=n_articles)
-	algorithms['ThompsonSamplingMultiArmedBandit'] = ThompsonSamplingMultiArmedBandit(num_arm=n_articles)
-	algorithms['LinTS'] = LinTS(dimension=context_dimension,alpha=0.1)
+	# algorithms['EpsilonGreedyMultiArmedBandit'] = EpsilonGreedyMultiArmedBandit(num_arm=n_articles, epsilon=None)
+	# algorithms['UpperConfidenceBoundMultiArmedBandit'] = UCBMultiArmedBandit(num_arm=n_articles)
+	# algorithms['ThompsonSamplingMultiArmedBandit'] = ThompsonSamplingMultiArmedBandit(num_arm=n_articles)
+	#algorithms['LinTS'] = LinTS(dimension=context_dimension,alpha=0.1)
+	#algorithms['LinUCB'] = LinUCB(dimension=context_dimension,alpha=0.1
+	algorithms['LinUCB'] = LinUCB(dimension=context_dimension,alpha=0.1, lambda_=0.1)
+	algorithms['LinTS'] = LinTS(dimension=context_dimension, lambda_=0.1)
 
 
 

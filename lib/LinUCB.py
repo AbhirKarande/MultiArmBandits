@@ -1,4 +1,4 @@
-#implement LinUCB linear bandit algorithm
+#implement LinUCB for contextual linear bandit
 
 import numpy as np
 import scipy.stats as stats
@@ -6,54 +6,58 @@ import math
 import random
 
 class LinUCB:
-    def __init__(self, dimension, alpha):
+    def __init__(self, dimension, alpha, lambda_):
         self.users = {}
         self.dimension = dimension
-        self.CanEstimateUserPreference = True
         self.alpha = alpha
+        self.lambda_ = lambda_
+
+        self.CanEstimateUserPreference = True
 
     def decide(self, pool_articles, userID):
         if userID not in self.users:
-            self.users[userID] = LinUCBStruct(self.dimension, self.alpha)
+            self.users[userID] = LinUCBStruct(self.dimension, self.alpha, self.lambda_)
         return self.users[userID].decide(pool_articles)
 
     def updateParameters(self, articlePicked, click, userID):
         self.users[userID].updateParameters(articlePicked, click)
 
     def getTheta(self,userID):
-        return self.users[userID].UserArmMean
+        return self.users[userID].UserTheta
 
 
 class LinUCBStruct:
-    def __init__(self, dimension, alpha):
+    def __init__(self, dimension, alpha, lambda_):
         self.d = dimension
-        self.UserArmMean = np.zeros(self.d)
-        self.UserArmTrials = np.zeros(self.d)
-        self.UserArmVar = np.ones(self.d)
-        self.time = 0
         self.alpha = alpha
+        self.lambda_ = lambda_
 
-    def updateParameters(self, articlePicked, click):
-        self.UserArmMean += np.dot(articlePicked.id, click - np.dot(self.UserArmMean, articlePicked.id))
-        self.UserArmTrials += 1
-        self.UserArmVar = 1.0/(self.UserArmTrials+1)
-        self.time += 1
+        self.A = np.identity(self.d) * self.lambda_
+        self.b = np.zeros((self.d, 1))
+        self.UserTheta = np.zeros((self.d, 1))
+        self.time = 0
 
     def getTheta(self):
-        return self.UserArmMean
+            return self.UserTheta
 
+    def updateParameters(self, articlePicked, click):
+        x = articlePicked.featureVector
+        x = x.reshape(self.d, 1)
+        self.A += np.dot(x, x.T)
+        self.b += click * x
+        self.UserTheta = np.dot(np.linalg.inv(self.A), self.b)
+        self.time += 1
     def decide(self, pool_articles):
         maxPTA = float('-inf')
         articlePicked = None
 
         for article in pool_articles:
-            article_pta = np.dot(self.UserArmMean, article.id) + self.alpha * np.sqrt(np.dot(article.id, np.dot(np.diag(self.UserArmVar), article.id)))
-            print(type(article_pta))
-            print(article_pta)
-            #convert article_pta to float
-            article_pta = float(article_pta)
-            if maxPTA < article_pta:
+            x = article.featureVector
+            x = x.reshape(self.d, 1)
+            pta = np.dot(self.UserTheta.T, x) + self.alpha * math.sqrt(np.dot(np.dot(x.T, np.linalg.inv(self.A)), x))
+            # pick article with highest Prob
+            if maxPTA < pta:
                 articlePicked = article
-                maxPTA = article_pta
+                maxPTA = pta
 
         return articlePicked
